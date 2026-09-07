@@ -1,15 +1,26 @@
 import UserInput from "./UserInput";
 import Comment from "./Comment";
 import { useState } from "react";
+import type { CommentProps } from "../types/commentType";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const CommentSection = () => {
   const [userInput, setUserInput] = useState<string>("");
-  const [comments,setComments] = useState<string[]>([]);
+  const [comments,setComments] = useState<CommentProps[]>([]);
+  const {theme} = useContext(ThemeContext);
 
   const handleAdd = () => {
     console.log("added",userInput);
+    const commentData : CommentProps = {
+      id : Date.now(),
+      comment : userInput,
+      userName : "Ava Thomson" ,
+      role : "member",
+      createdAt : new Date().toLocaleString()
+    }
     if(!userInput.trim()) return;
-    setComments(prev => [...prev , userInput])
+    setComments(prev => [...prev , commentData])
     setUserInput("");
   };
 
@@ -23,8 +34,8 @@ const CommentSection = () => {
       />
 
       <div className="mt-6 w-full max-w-4xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-[#1f2937]">
+        <div className="my-4 flex items-center justify-between">
+          <h2 className={`text-2xl font-semibold ${theme=== 'light' ? 'text-[#1f2937]' : 'text-white'}`}>
            {comments.length > 0 ? " Recent comments" : "No comments"}
           </h2>
           {/* <span className="rounded-full bg-[#e7e2ff] px-3 py-1 text-xs font-medium text-[#473a7a]">
@@ -33,8 +44,8 @@ const CommentSection = () => {
         </div>
 
         <div className="space-y-3">
-          {comments.map((comment,index)=>(
-           <Comment key={index} comment={comment}/>
+          {comments.map((data)=>(
+           <Comment key={data.id} data={data}/>
           ))}
         </div>
       </div>
