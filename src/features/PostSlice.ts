@@ -14,7 +14,8 @@ const PostSlice = createSlice({
     reducers :{
         addPost: (state,action: PayloadAction<Post>)=>{
             state.posts.unshift(action.payload)
-        }
+        },
+        
 
     }
 

@@ -1,8 +1,33 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addPost } from "../features/PostSlice";
+import type { AppDispatch } from "../store/store";
 
 export const PostForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [userData, setUserData] = useState<string>("");
+  const [error,setError] = useState<string>('')
+
+  const handleSubmit = (e:React.FormEvent) => {
+    e.preventDefault();
+    if(!userData.trim()) {
+      setError("field cannot be empty")
+      return;
+    }
+    console.log(userData)
+    dispatch(
+      addPost({
+        id: Date.now(),
+        username: "Rajni",
+        content: userData.trim(),
+        createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      })
+    )
+    setUserData("")
+  };
   return (
     <div className="w-full max-w-2xl mx-auto my-6 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 transition-all">
-      <form>
+      <form onSubmit={handleSubmit}>
         {/* Header / Title */}
         <div className="flex items-center space-x-3 mb-3">
           <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">
@@ -20,11 +45,13 @@ export const PostForm = () => {
             rows={3}
             placeholder="What's on your mind?..."
             className="w-full p-3 text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none transition-all placeholder:text-gray-400"
+            value={userData}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>)=>{setUserData(e.target.value)}}
           />
         </div>
 
         {/* Validation Error Placeholder */}
-        <p className="text-xs text-red-500 mt-1 font-medium">Post content cannot be empty!</p>
+        {error && <p className="text-xs text-red-500 mt-1 font-medium">Post content cannot be empty!</p>}
 
         {/* Footer Actions */}
         <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100 dark:border-gray-700">
