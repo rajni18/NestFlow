@@ -3,5 +3,5 @@ export interface Post{
   username: string;
   content: string;
   createdAt: string;
-  likes: number;
+  likes?: number;
 }

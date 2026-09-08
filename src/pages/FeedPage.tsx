@@ -1,8 +1,8 @@
-
-import { PostForm } from '../components/PostForm';
-import { PostList } from '../components/PostList';
+import { PostForm } from "../components/PostForm";
+import { PostList } from "../components/PostList";
 
 export const FeedPage = () => {
+ 
   return (
     <div className="min-h-screen bg-gray-50/60 py-8 px-4">
       <div className="max-w-xl mx-auto space-y-6">
@@ -17,7 +17,7 @@ export const FeedPage = () => {
         </div>
 
         {/* 1. Post Creation */}
-        <PostForm />
+        <PostForm/>
 
         {/* 2. Feed Stream / Post List */}
         <PostList />
